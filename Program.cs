@@ -26,67 +26,52 @@ public class Program
             xs[i] = x;
         }
     }
-    public static int FindIndex(object[][] db, string name){
-        for(int i=0; i<db.Length; i++)
-            if(name.Equals((string)db[i][0]))
+    public static int FindIndex(object[][] db, string name)
+    {
+        for (int i = 0; i < db.Length; i++)
+            if (name.Equals((string)db[i][0]))
                 return i;
         return -1;
     }
-    public static void ThemHangVaoGio(object[][] cart,object[][] db)
+    public static void ThemHangVaoGio(object[][] cart, object[][] db)
     {
         bool cont = true;
         while (cont)
         {
-            Console.Write("Ban muon mua hang gi? Gao/Ngo/Khoai");
-            string pname = Console.ReadLine();
-            int index = FindIndex(db, pname);
-            int x = 0;
-            switch(pname){
-                case "Gao":
-                    Console.WriteLine("Nhập số lượng Gạo:");
-                    x = int.Parse(Console.ReadLine());
-                    if(x <= (int)db[0][1])
-                        cart[0][0] = x;
-                    else
-                        cart[0][0] = db[index][1];
-                    cart[0][1] = db[index][2];
-                    break;
-                case "Ngo":
-                    Console.WriteLine("Nhập số lượng Ngo:");
-                    x = int.Parse(Console.ReadLine());
-                    if(x <= (int)db[0][1])
-                        cart[1][0] = x;
-                    else
-                        cart[1][0] = db[index][1];
-                    cart[1][1] = db[index][2];
-                    break;
-                case "Khoai":
-                    Console.WriteLine("Nhập số lượng Khoai:");
-                    x = int.Parse(Console.ReadLine());
-                    if(x <= (int)db[0][1])
-                        cart[2][0] = x;
-                    else
-                        cart[2][0] = db[index][1];
-                    cart[2][1] = db[index][2];
-                    break;
-                default:
-                    break;
+            Console.Write("Ban muon mua hang gi\n?");
+            for (int i = 0; i < db.Length; i++)
+            {
+                Console.WriteLine($"{i} - {db[i][0]}\n");
             }
+
+            int index = int.Parse(Console.ReadLine());
+            Console.WriteLine($"Nhập số lượng của {db[index][0]}:");
+            int x = 0;
+            x = int.Parse(Console.ReadLine());
+            if (x <= (int)db[index][1])
+                cart[index][0] = x;
+            else
+                cart[index][0] = db[index][1];
+            cart[index][1] = db[index][2];
+
+
+
             Console.Write("Bạn muốn mua hàng? Y/N");
             cont = (Console.ReadLine() == "Y") ? true : false;
         }
-        Checkout(cart);
+        Checkout(cart, db);
     }
-    public static void Checkout(object[][] cart){
+    public static void Checkout(object[][] cart, object[][] db)
+    {
         float sum = 0;
-        for(int i=0; i<cart.Length; i++)
-            if((int)cart[i][0]!=0)
-            sum += (int)cart[i][0] * (float)cart[i][1];
-        string  format =  "==> Gio hang <==";
-        string[] names = {"Gao", "Ngo", "Khoai"};
-        for(int i=0; i<cart.Length; i++)
-            if((int)cart[i][0]!=0)
-                format += "\nHang ["+names[i]+"], \tSL: "+cart[i][0]+", \tDG: "+cart[i][1];
+        for (int i = 0; i < cart.Length; i++)
+            if ((int)cart[i][0] != 0)
+                sum += (int)cart[i][0] * (float)cart[i][1];
+        string format = "==> Gio hang <==";
+
+        for (int i = 0; i < cart.Length; i++)
+            if ((int)cart[i][0] != 0)
+                format += "\nHang [" + db[i][0] + "], \tSL: " + cart[i][0] + ", \tDG: " + cart[i][1];
         Console.WriteLine(format);
         Console.WriteLine("---------");
         Console.WriteLine("Tong tien: " + sum);
@@ -94,15 +79,17 @@ public class Program
     public static void Main(string[] args)
     {
         Console.Clear();
-        object[][] db = new object[3][];
+        int n = 5;
+
+        object[][] db = new object[n][];
         for (int i = 0; i < db.Length; i++)
             db[i] = new object[3];
         NhapS(db);
-        object[][] cart = new object[3][];
-        for (int i=0; i<cart.Length; i++)
+        object[][] cart = new object[n][];
+        for (int i = 0; i < cart.Length; i++)
             cart[i] = new object[2];
-        for (int i=0; i<cart.Length; i++)
-            for (int j=0; j<cart[i].Length; j++)
+        for (int i = 0; i < cart.Length; i++)
+            for (int j = 0; j < cart[i].Length; j++)
                 cart[i][j] = 0;
         ThemHangVaoGio(cart, db);
         Console.ReadLine();
