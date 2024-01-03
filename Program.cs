@@ -9,18 +9,18 @@ public class Program
     */
     public static void Nhap(object[] x)
     {
-        Console.Write("Nhập tên hàng: ");
+        Console.Write("\tNhập tên hàng: ");
         x[0] = Console.ReadLine();
-        Console.Write("Nhập Số lượng: ");
+        Console.Write("\tNhập Số lượng: ");
         x[1] = int.Parse(Console.ReadLine());
-        Console.Write("Nhập Đơn giá: ");
+        Console.Write("\tNhập Đơn giá: ");
         x[2] = float.Parse(Console.ReadLine());
     }
     public static void NhapS(object[][] xs)
     {
         for (int i = 0; i < xs.Length; i++)
         {
-            Console.Write("Nhập mặt hàng thứ {0}", i);
+            Console.Write(">> Nhập mặt hàng thứ {0}\n", i);
             object[] x = new object[3];
             Nhap(x);
             xs[i] = x;
@@ -80,21 +80,31 @@ public class Program
     public static void Checkout(object[][] cart){
         float sum = 0;
         for(int i=0; i<cart.Length; i++)
+            if((int)cart[i][0]!=0)
             sum += (int)cart[i][0] * (float)cart[i][1];
-        string  format =  "==> Gio hang <==\n";
+        string  format =  "==> Gio hang <==";
         string[] names = {"Gao", "Ngo", "Khoai"};
         for(int i=0; i<cart.Length; i++)
-                format += "Hang ["+names[i]+"], \tSL: "+cart[i][0]+", \tDG: "+cart[i][1];
+            if((int)cart[i][0]!=0)
+                format += "\nHang ["+names[i]+"], \tSL: "+cart[i][0]+", \tDG: "+cart[i][1];
         Console.WriteLine(format);
+        Console.WriteLine("---------");
         Console.WriteLine("Tong tien: " + sum);
     }
     public static void Main(string[] args)
     {
         Console.Clear();
-        object[][] xs = new object[2][];
-        for (int i = 0; i < xs.Length; i++)
-            xs[i] = new object[3];
-        NhapS(xs);
+        object[][] db = new object[3][];
+        for (int i = 0; i < db.Length; i++)
+            db[i] = new object[3];
+        NhapS(db);
+        object[][] cart = new object[3][];
+        for (int i=0; i<cart.Length; i++)
+            cart[i] = new object[2];
+        for (int i=0; i<cart.Length; i++)
+            for (int j=0; j<cart[i].Length; j++)
+                cart[i][j] = 0;
+        ThemHangVaoGio(cart, db);
         Console.ReadLine();
     }
 }
